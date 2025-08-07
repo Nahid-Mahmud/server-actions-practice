@@ -22,7 +22,7 @@ export default async function UserList() {
           <p className="text-gray-600 mt-1">List of all registered users</p>
         </div>
 
-        {users.users.length > 0 ? (
+        {users?.users?.length > 0 ? (
           <ul className="divide-y divide-gray-200 p-5">
             {users?.users?.map((user: { _id: string; name: string; email: string }, index: number) => (
               <li key={user._id} className="py-4 flex items-center gap-5">
