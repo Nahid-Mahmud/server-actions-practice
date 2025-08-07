@@ -56,11 +56,31 @@ export const addUser = async ({ id }: { id: string }, prevState: FormState, form
 };
 
 export const getUsers = async () => {
-  // const res = await fetch("http://localhost:5000/api/v1/auth/test-users", {
-  //   next: {
-  //     tags: ["users"],
-  //   },
-  // });
-  // return res.json();
-  return [];
+  try {
+    const res = await fetch("http://localhost:5000/api/v1/auth/test-users", {
+      next: {
+        tags: ["users"],
+      },
+    });
+
+    if (!res.ok) {
+      console.error(`HTTP Error: ${res.status} ${res.statusText}`);
+      return {
+        users: [],
+        error: `Failed to fetch users: ${res.status} ${res.statusText}`,
+      };
+    }
+
+    const data = await res.json();
+    return {
+      users: data.users || data,
+      error: null,
+    };
+  } catch (error) {
+    console.error("Network error:", error);
+    return {
+      users: [],
+      error: "Network error: Unable to fetch users. Please check your connection.",
+    };
+  }
 };
