@@ -78,9 +78,20 @@ export const getUsers = async () => {
     };
   } catch (error) {
     console.error("Network error:", error);
+
+    // More specific error message based on the error type
+    let errorMessage = "Network error: Unable to fetch users.";
+
+    if (error instanceof TypeError && error.message.includes("fetch failed")) {
+      errorMessage =
+        "Connection failed: Unable to reach the server at localhost:5000. Please ensure the server is running.";
+    } else if (error instanceof Error) {
+      errorMessage = `Network error: ${error.message}`;
+    }
+
     return {
       users: [],
-      error: "Network error: Unable to fetch users. Please check your connection.",
+      error: errorMessage,
     };
   }
 };
